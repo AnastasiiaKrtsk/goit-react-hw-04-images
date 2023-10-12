@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Searchbar } from './Search-Bar/SearchBar';
+import React, { useState, useEffect } from 'react';
+import Searchbar from './Search-Bar/SearchBar';
 import { ImageGallery } from './Image-Gallery/ImageGallery';
 import { getImages } from './services/api';
 import { RotatingLines } from 'react-loader-spinner';
@@ -43,12 +43,7 @@ function App() {
         const totalPages = Math.ceil(response.data.totalHits / 12);
         const hasMoreImages = page < totalPages;
 
-        if (page === 1) {
-          setImages(newImages);
-        } else {
-          setImages(prevImages => [...prevImages, ...newImages]);
-        }
-
+        setImages(prevImages => [...prevImages, ...newImages]);
         setShowLoadMore(hasMoreImages);
 
         if (newImages.length === 0) {
@@ -65,29 +60,27 @@ function App() {
     fetchData();
   }, [searchValue, page]);
 
-  const handleFormSubmit = useCallback(value => {
-    setImages([]);
-    setPage(1);
-    setSearchValue(value);
-  }, []);
+  const handleFormSubmit = searchValue => {
+    setSearchValue(searchValue);
+  };
 
-  const onOpenModal = useCallback(imageURL => {
+  const onOpenModal = imageURL => {
     setModal({
       isOpen: true,
       imageURL: imageURL,
     });
-  }, []);
+  };
 
-  const onCloseModal = useCallback(() => {
+  const onCloseModal = () => {
     setModal({
       isOpen: false,
       imageURL: '',
     });
-  }, []);
+  };
 
-  const loadMoreImages = useCallback(() => {
+  const loadMoreImages = () => {
     setPage(prevPage => prevPage + 1);
-  }, []);
+  };
 
   return (
     <div>
@@ -95,7 +88,7 @@ function App() {
       {error && <p>{error}</p>}
       {loading && (
         <RotatingLines
-          strokeColor=" #3f51b5"
+          strokeColor="#3f51b5"
           strokeWidth={5}
           animationDuration={0.75}
           width={96}
