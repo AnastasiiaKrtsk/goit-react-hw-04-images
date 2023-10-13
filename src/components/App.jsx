@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { getImages } from './services/api';
+import { toast } from 'react-toastify';
 import Searchbar from './Search-Bar/SearchBar';
 import { ImageGallery } from './Image-Gallery/ImageGallery';
-import { getImages } from './services/api';
 import { RotatingLines } from 'react-loader-spinner';
-import { toast } from 'react-toastify';
-import { Modal } from './Modal/Modal';
+import Modal from './Modal/Modal';
 import { Button } from './Button/Button';
 
 const toastConfig = {
@@ -43,7 +43,9 @@ function App() {
         const totalPages = Math.ceil(response.data.totalHits / 12);
         const hasMoreImages = page < totalPages;
 
-        setImages(prevImages => [...prevImages, ...newImages]);
+        setImages(prevImages =>
+          page === 1 ? newImages : [...prevImages, ...newImages]
+        );
         setShowLoadMore(hasMoreImages);
 
         if (newImages.length === 0) {
@@ -62,6 +64,8 @@ function App() {
 
   const handleFormSubmit = searchValue => {
     setSearchValue(searchValue);
+    setImages([]);
+    setPage(1);
   };
 
   const onOpenModal = imageURL => {
