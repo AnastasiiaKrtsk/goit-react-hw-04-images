@@ -4,7 +4,7 @@ import { ImageGallery } from './Image-Gallery/ImageGallery';
 import { getImages } from './services/api';
 import { RotatingLines } from 'react-loader-spinner';
 import { toast } from 'react-toastify';
-import { Modal } from './Modal/Modal';
+import Modal from './Modal/Modal';
 import { Button } from './Button/Button';
 
 const toastConfig = {
